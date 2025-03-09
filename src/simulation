@@ -1,0 +1,356 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <gsl/gsl_rng.h>
+#include "include/definitions.h"
+
+/*  This function computes and returns the change in
+   system energy when spin (i,j) is flipped.
+   For a given site (idx,idy,idz) it goes through all
+   the 1st and 2nd nearest neighbors and calculates
+   the exchange energies given by the Hamiltonian */
+double E ( int *F, double *S, double h, double J1[][2], double J2[][2], int L,
+           int id, int **NNList1, int **NNList2) {
+  int nn,idn,N=L*L*L*4;
+  double e=0;
+
+  for(nn=0;nn<NNList1[id][0];nn++){
+    idn=NNList1[id][nn+1];    // first nearest-neighbor id
+    e+=J1[F[id]][F[idn]]*S[id]*S[idn];
+  }
+  for(nn=0;nn<NNList2[id][0];nn++){
+    idn=NNList2[id][nn+1];    // second nearest-neighbor id
+    e+=J2[F[id]][F[idn]]*S[id]*S[idn];
+  }
+  return 2*(e+h*S[id]);
+}
+
+/* Sample the system; compute the average magnetization
+   and the average energy per spin */
+double samp ( int *F, double *S, double h, double J1[][2], double J2[][2], int L,
+              int **NNList1,int **NNList2, double *sFe, double *sMo, double *e ) {
+  int l,i,idn,N=L*L*L*4;
+
+  *sFe=0.0;
+  *sMo=0.0;
+  *e=0.0;
+  /* Visit each position (i,j) in the lattice */
+  for (i=0;i<N;i++){
+     if(F[i]==Fe) *sFe+=S[i];
+     else         *sMo+=S[i];
+
+     for(l=0;l<NNList1[i][0];l++){
+       idn=NNList1[i][l+1];    // first nearest-neighbor id
+       *e-=J1[F[i]][F[idn]]*S[i]*S[idn];
+     }
+     for(l=0;l<NNList2[i][0];l++){
+       idn=NNList2[i][l+1];    // J1FeFefirst nearest-neighbor id
+       *e-=J2[F[i]][F[idn]]*S[i]*S[idn];
+     }
+     *e-=h*S[i];
+  }
+  *sFe/=(N*0.5);
+  *sMo/=(N*0.5);
+
+  *e/=N;
+}
+
+void out_config(int *F, double *S, double **P, int L, double T, double h, int c){
+  int i,N=L*L*L*4;
+  FILE *fpcon;
+  char ch,str[LINE_LENGTH];
+
+  sprintf(str,"config/config.L.%03d.T.%06.1f.h.%05.1f.Cy.%09d.xyz",L,T,h,c); //puts(str);
+  if ((fpcon = fopen(str, "w")) == NULL) {
+    fprintf(stderr,"File open failed at \"%s\"\n",str);
+    exit(EXIT_FAILURE);
+  }
+  fprintf(fpcon,"%d\n\n",N);
+  for (i=0;i<N;i++){
+    if     (S[i]==-5/2.) ch='A';
+    else if(S[i]== 5/2.) ch='B';
+    else if(S[i]==-1/2.) ch='C';
+    else if(S[i]== 1/2.) ch='D';
+    else  ch='X';
+    fprintf(fpcon,"%c %f %f %f %d %3.1f\n",ch,P[i][0],P[i][1],P[i][2],F[i],S[i]);
+  }
+  fclose(fpcon);
+}
+
+int main( int argc, char * argv[] ){
+  int i,j,k,nn,id;
+  int idx,idy,idz;
+
+  /* System parameters */
+  int L=20;             /* The sidelength of the array */
+  int N=L*L*L;          /* The total number of spins = L*L */
+  double T=200.0, beta; /* Dimensionless temperature = (T*k)/J */
+  double h=4.0;         /* Magnetic filed strength (Tesla) */
+
+  /* Run parameters */
+  int nCycles=20000; /* number of MC cycles to run; one cycle is N
+			                  consecutive attempted spin flips */
+  int nCyEqul=10000; /* number of MC cycles to equilibrate the system; */
+  int fSamp=100;     /* Frequency with which samples are taken */
+
+  /* Computational variables */
+  int nSamp=0;    /* Number of samples taken */
+  double de;      /* energy change due to flipping a spin */
+  double b;       /* Boltzman factor */
+  double x;       /* random number */
+  int a,c;        /* loop counters */
+
+  /* Observables */
+  double sFe=0.0, sFesum=0.0;    /* average magnetization */
+  double sMo=0.0, sMosum=0.0;    /* average magnetization */
+  double e=0.0, esum=0.0;    /* avJ1FeFeerage energy per spin */
+
+  int *F;           /* The 3D array of Fe and Mo identity  */
+  double *S;        /* The 3D array of Fe and Mo spins */
+  double **P;     /* Postion of the tetragonal lattice points */
+  int **NNList1,**NNList2;
+
+  double SFe[]={-5./2,-3./2,-1./2,1./2,3./2,5./2};
+  double SMo[]={-1./2,1./2};
+
+  double J1[][2]={{J1FeFe,J1FeMo},{J1FeMo,J1MoMo}};
+  double J2[][2]={{J2FeFe,J2FeMo},{J2FeMo,J2MoMo}};
+
+  /* This line creates a random number generator
+     of the "Mersenne Twister" type, which is much
+     better than the default random number generator. */
+  gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937);
+  unsigned long int Seed = 23410981;
+
+  /*  Here we parse the command line arguments */
+  for (i=1;i<argc;i++) {
+    if (!strcmp(argv[i],"-L"))         L=atoi(argv[++i]);
+    else if (!strcmp(argv[i],"-T"))    T=atof(argv[++i]);
+    else if (!strcmp(argv[i],"-h"))    h=atof(argv[++i]);
+    else if (!strcmp(argv[i],"-nc"))   nCycles = atoi(argv[++i]);
+    else if (!strcmp(argv[i],"-fs"))   fSamp = atoi(argv[++i]);
+    else if (!strcmp(argv[i],"-nce"))  nCyEqul = atoi(argv[++i]);
+    else if (!strcmp(argv[i],"-s"))    Seed = (unsigned long)atoi(argv[++i]);
+  }
+
+  gsl_rng_set(r,Seed);
+  N=L*L*L*4;
+  beta=1.0/T; /* For computational efficiency, convert T to reciprocal T */
+
+  /* Allocate memory for the system */
+  F=(int*)malloc(N*sizeof(int));
+  S=(double*)malloc(N*sizeof(double));
+  P=(double**)malloc(N*sizeof(double*));
+  for (i=0;i<N;i++) P[i]=(double*)malloc(3*sizeof(double));
+
+  double aa=5.58,bb=5.58,cc=7.90;
+
+  nn=0;
+  for (k=0;k<L;k++){
+    /* Fe atoms on the 0th layer */
+    for (j=0;j<L;j++){
+      for (i=0;i<L;i++){
+        F[nn]=Fe;
+        S[nn]=5/2.;
+        P[nn][0]=aa*(i+0.0);
+        P[nn][1]=bb*(j+0.0);
+        P[nn][2]=cc*(k+0.0);
+        nn++;
+      }
+    }
+    /* Mo atoms on the 0th layer */
+    for (j=0;j<L;j++){
+      for (i=0;i<L;i++){
+        F[nn]=Mo;
+        S[nn]=1/2.;
+        P[nn][0]=aa*(i+0.5);
+        P[nn][1]=bb*(j+0.5);
+        P[nn][2]=cc*(k+0.0);
+        nn++;
+      }
+    }
+    /* Mo atoms on the 1st layer */
+    for (j=0;j<L;j++){
+      for (i=0;i<L;i++){
+        F[nn]=Mo;
+        S[nn]=1/2.;
+        P[nn][0]=aa*(i+0.0);
+        P[nn][1]=bb*(j+0.0);
+        P[nn][2]=cc*(k+0.5);
+        nn++;
+      }
+    }
+    /* Fe atoms on the 1st layer */
+    for (j=0;j<L;j++){
+      for (i=0;i<L;i++){
+        F[nn]=Fe;
+        S[nn]=5/2.;
+        P[nn][0]=aa*(i+0.5);
+        P[nn][1]=bb*(j+0.5);
+        P[nn][2]=cc*(k+0.5);
+        nn++;
+      }
+    }    
+  }
+
+  NNList1=(int**)malloc(N*sizeof(int*));
+  NNList2=(int**)malloc(N*sizeof(int*));
+  for (i=0;i<N;i++){
+    NNList1[i]=(int*)malloc(60*sizeof(int));
+    NNList2[i]=(int*)malloc(60*sizeof(int));
+  }
+  
+  int nn1,nn2;
+  double Lx=L*aa, hLx=Lx/2.0;
+  double Ly=L*bb, hLy=Ly/2.0;
+  double Lz=L*cc, hLz=Lz/2.0;
+  double rr,dx,dy,dz;
+
+  double rcFeFe1,rcFeFe2;
+  double rcFeMo1,rcFeMo2;
+  
+  rcFeFe1 = aa;      /* Fe-Fe 1st nearest neighbor distance */
+  rcFeFe2 = cc;      /* Fe-Fe 2nd nearest neighbor distance */
+
+  rcFeMo1 = aa/sqrt(2);     /* Fe-Mo 1st nearest neighbor distance */
+  rcFeMo2 = aa*sqrt(3./2);  /* Fe-Mo 2nd nearest neighbor distance */
+
+  fprintf(stdout, "%f %f %f %f\n",rcFeFe1,rcFeFe2,rcFeMo1,rcFeMo2); //return 0;
+
+  for (nn1=0;nn1<N;nn1++){
+    NNList1[nn1][0]=0;
+    NNList2[nn1][0]=0;
+    for (nn2=0;nn2<N;nn2++){
+      dx=P[nn2][0]-P[nn1][0];
+      dy=P[nn2][1]-P[nn1][1];
+      dz=P[nn2][2]-P[nn1][2];
+      if (dx>hLx) dx-=Lx; else if (dx<-hLx) dx+=Lx;
+      if (dy>hLy) dy-=Ly; else if (dy<-hLy) dy+=Ly;
+      if (dz>hLz) dz-=Lz; else if (dz<-hLz) dz+=Lz;
+
+      rr = sqrt(dx*dx + dy*dy + dz*dz);
+      /* if the elements are same, i.e. FeFe */
+      if((F[nn1]+F[nn2])%2==0){
+        /* **************** first-nearest neighbors ******/
+        if(rr>(rcFeFe1*0.95) && rr<=(rcFeFe1*1.05)){
+          nn=++NNList1[nn1][0];
+          NNList1[nn1][nn]=nn2;
+          fprintf(stdout, "NN1 %s %s\n",F[nn1]==0?"Fe":"Mo",F[nn2]==0?"Fe":"Mo");
+        }
+        /* *************** second-nearest neighbors ******/
+        if(rr>(rcFeFe2*0.95) && rr<=(rcFeFe2*1.05)){
+          nn=++NNList2[nn1][0];
+          NNList2[nn1][nn]=nn2;
+          fprintf(stdout, "NN2 %s %s\n",F[nn1]==0?"Fe":"Mo",F[nn2]==0?"Fe":"Mo");
+        }
+      }
+      /* if the elements are different, i.e. FeMo or MoFe */
+      if((F[nn1]+F[nn2])==1){
+        /* **************** first-nearest neighbors ******/
+        if(rr>(rcFeMo1*0.95) && rr<=(rcFeMo1*1.05)){
+          nn=++NNList1[nn1][0];
+          NNList1[nn1][nn]=nn2;
+          fprintf(stdout, "NN1 %s %s\n",F[nn1]==0?"Fe":"Mo",F[nn2]==0?"Fe":"Mo");
+        }
+        /* *************** second-nearest neighbors ******/
+        if(rr>(rcFeMo2*0.95) && rr<=(rcFeMo2*1.05)){
+          nn=++NNList2[nn1][0];
+          NNList2[nn1][nn]=nn2;
+          fprintf(stdout, "NN2 %s %s\n",F[nn1]==0?"Fe":"Mo",F[nn2]==0?"Fe":"Mo");
+        }
+      }
+    } /* end of for (nn2=0;nn2<N;nn2++) */
+    return 0;
+  } /* end of for (nn1=0;nn1<N;nn1++) */
+
+  for (nn=0;nn<N;nn++){
+    fprintf(stdout,"%d %s %d %d %d %4.2f\n",nn, F[nn]==0?"Fe":"Mo",NNList1[nn][0],NNList2[nn][0],F[nn],S[nn]);
+  }
+  //return 0;
+  
+  double grFeFe[5000],grFeMo[5000],gr_rc=10,dr=0.01;
+  for (nn1=0;nn1<5000;nn1++) {grFeFe[nn1]=0; grFeMo[nn1]=0;}
+  
+  for (nn1=0;nn1<N;nn1++){
+    for (nn2=nn1+1;nn2<N;nn2++){
+      dx=P[nn2][0]-P[nn1][0];
+      dy=P[nn2][1]-P[nn1][1];
+      dz=P[nn2][2]-P[nn1][2];
+      if (dx>hLx) dx-=Lx; else if (dx<-hLx) dx+=Lx;
+      if (dy>hLy) dy-=Ly; else if (dy<-hLy) dy+=Ly;
+      if (dz>hLz) dz-=Lz; else if (dz<-hLz) dz+=Lz;
+
+      rr = sqrt(dx*dx + dy*dy + dz*dz);
+      if((F[nn1]+F[nn2])%2==0) if(rr<gr_rc) grFeFe[((int)(rr/dr))]+=2;    
+      if((F[nn1]+F[nn2])%2==1) if(rr<gr_rc) grFeMo[((int)(rr/dr))]+=2;    
+    }
+  }
+  
+  FILE *fpcon,*fpmag,*fpgr;
+  char str[LINE_LENGTH];
+
+  sprintf(str,"mag/gr.L.%03d.T.%06.1f.h.%05.1f",L,T,h); //puts(str);
+  if ((fpgr = fopen(str, "w")) == NULL) {
+    fprintf(stderr,"File open failed at \"%s\"\n",str);
+    exit(EXIT_FAILURE);
+  }
+  for (nn1=0;nn1<5000;nn1++) fprintf(fpgr,"%f %f  %f %s\n",nn1*dr,grFeFe[nn1],grFeMo[nn1],F[nn]==0?"Fe":"Mo");
+  fclose(fpgr);
+  return 0;
+    
+  sprintf(str,"mag/mag.L.%03d.T.%06.1f.h.%05.1f",L,T,h); //puts(str);
+  if ((fpmag = fopen(str, "w")) == NULL) {
+    fprintf(stderr,"File open failed at \"%s\"\n",str);
+    exit(EXIT_FAILURE);
+  }
+
+  /*  Output some initial information */
+  /* fprintf(stdout,"# command: ");
+  for (i=0;i<argc;i++) fprintf(stdout,"%s ",argv[i]);
+  fprintf(stdout,"\n");
+  fprintf(stdout,"# ISING simulation, NVT Metropolis Monte Carlo\n");
+  fprintf(stdout,"# L = %i, T = %.3lf, h = %.3lf, nCycles = %i, fSamp = %i, Seed = %lu\n\n",
+	  L,T,h,nCycles,fSamp,Seed);*/
+	
+	fprintf(fpmag,"# command: ");
+  for (i=0;i<argc;i++) fprintf(fpmag,"%s ",argv[i]);
+  fprintf(fpmag,"\n");
+  fprintf(fpmag,"# ISING simulation, NVT Metropolis Monte Carlo\n");
+  fprintf(fpmag,"# L = %i, T = %.3lf, h = %.3lf, nCycles = %i, fSamp = %i, Seed = %lu\n\n",
+	  L,T,h,nCycles,fSamp,Seed);
+	
+  out_config(F,S,P,L,T,h,0);
+  for (c=1;c<=nCycles;c++) {
+    /* Make N flip attempts */
+    for (a=0;a<N;a++) {
+      /* randomly select a spin */
+      id=(int)gsl_rng_uniform_int(r,N);
+      /* get the "new" energy as the incremental change due
+         to flipping spin (i,j) */
+      de = E(F,S,h,J1,J2,L,id,NNList1,NNList2);
+      /* compute the Boltzmann factor; recall T is now
+         reciprocal temperature */
+      b = exp(-de*beta);
+      /* pick a random number between 0 and 1 */
+      x = gsl_rng_uniform(r);
+      /* accept or reject this flip */
+      if (x<b) S[id]*=-1;  /* accept the move and flip it */
+    }
+    /* Sample and accumulate averages */
+    if (c>=nCyEqul&&!(c%fSamp)) {
+      samp(F,S,h,J1,J2,L,NNList1,NNList2,&sFe,&sMo,&e);
+      //fprintf(stdout,"%i %lf %lf %lf %lf\n",c,sFe,sMo,(sFe+sMo)*0.5,e);
+      fprintf(fpmag,"%i %.5le %.5le %.5le %.5le\n",c,sFe,sMo,(sFe+sMo)*0.5,e);
+      sFesum+=sFe;
+      sMosum+=sMo;
+      esum+=e;
+      nSamp++;
+    }
+    if(c==nCyEqul || c==nCycles) out_config(F,S,P,L,T,h,c);
+  }
+
+  //fprintf(stdout,"\n# %d %.5lf %.5lf %.5le %.5le %.5le %.5le\n",L,T,h,sFesum/nSamp,sMosum/nSamp,(sFesum+sMosum)/nSamp/2.0,esum/nSamp);
+  fprintf(fpmag,"\n\n# %d %.5lf %.5lf %.5le %.5le %.5le %.5le\n",L,T,h,sFesum/nSamp,sMosum/nSamp,(sFesum+sMosum)/nSamp/2.0,esum/nSamp);
+  fclose(fpmag);
+}

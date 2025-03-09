@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "definitions.h": "c",
+        "simulation": "cpp",
+        "unitcelltemplate.h": "c",
+        "lattice.h": "c",
+        "parameters.h": "c"
+    }
+}
