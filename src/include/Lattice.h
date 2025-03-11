@@ -1,14 +1,14 @@
 #pragma once
 #include <stdint.h>
-#include "include/Definitions.h"
+#include "Definitions.h"
 
 typedef struct 
 {
     uint8_t atom;// Atom type array BYTEMAX means no atom there
     float spin; // This array accounts for spin of atoms
     uint32_t id;
-    int first_nearest_neighbours[14];
-    int second_nearest_neighbours[14];
+    uint32_t first_nearest_neighbours[8];
+    uint32_t second_nearest_neighbours[10];
     uint8_t first_nearest_neighbours_size;
     uint8_t second_nearest_neighbours_size;
 }Atom;
@@ -47,4 +47,4 @@ void InitalizeLattice(Lattice* Lattice,
 void Calculate_Neighbours(Lattice* Lattice,
         UnitCell cell);
 
-void PutOnEquilibrium(Lattice *lattice, UnitCell cell, double beta, float magnetic_field);
+void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field);

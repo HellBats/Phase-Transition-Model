@@ -1,7 +1,9 @@
 CMakeFiles/build.dir/src/Plots.c.o: \
- /home/hellbats/Code/Research/src/Plots.c /usr/include/stdc-predef.h \
- /home/hellbats/Code/Research/src/include/Plots.h \
- /home/hellbats/Code/Research/src/include/pbPlots.h /usr/include/stdlib.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/Plots.c \
+ /usr/include/stdc-predef.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Plots.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/pbPlots.h \
+ /usr/include/stdlib.h \
  /usr/include/aarch64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/aarch64-linux-gnu/bits/wordsize.h \
@@ -62,7 +64,7 @@ CMakeFiles/build.dir/src/Plots.c.o: \
  /usr/lib/gcc/aarch64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-least.h \
- /home/hellbats/Code/Research/src/include/supportLib.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/supportLib.h \
  /usr/include/stdio.h \
  /usr/include/aarch64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/aarch64-linux-gnu/bits/types/__fpos64_t.h \

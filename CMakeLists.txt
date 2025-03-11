@@ -9,6 +9,7 @@ file(GLOB_RECURSE SRC_FILES src/*.c)
 add_executable(build ${SRC_FILES})
 target_link_libraries(build PRIVATE -lgsl)
 target_link_libraries(build PRIVATE -lm)
+add_compile_definitions(OMP_STACKSIZE=512M)
 
 if(OpenMP_C_FOUND)
     target_link_libraries(build PRIVATE OpenMP::OpenMP_C)

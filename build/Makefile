@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/hellbats/Code/Research
+CMAKE_SOURCE_DIR = /home/hellbats/Code/Phase-Transition-Model
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/hellbats/Code/Research/build
+CMAKE_BINARY_DIR = /home/hellbats/Code/Phase-Transition-Model/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hellbats/Code/Research/build/CMakeFiles /home/hellbats/Code/Research/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles /home/hellbats/Code/Phase-Transition-Model/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hellbats/Code/Research/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -177,30 +177,6 @@ src/Parameters.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/Parameters.c.s
 .PHONY : src/Parameters.c.s
 
-src/Plots.o: src/Plots.c.o
-.PHONY : src/Plots.o
-
-# target to build an object file
-src/Plots.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/Plots.c.o
-.PHONY : src/Plots.c.o
-
-src/Plots.i: src/Plots.c.i
-.PHONY : src/Plots.i
-
-# target to preprocess a source file
-src/Plots.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/Plots.c.i
-.PHONY : src/Plots.c.i
-
-src/Plots.s: src/Plots.c.s
-.PHONY : src/Plots.s
-
-# target to generate assembly for a file
-src/Plots.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/Plots.c.s
-.PHONY : src/Plots.c.s
-
 src/Random.o: src/Random.c.o
 .PHONY : src/Random.o
 
@@ -273,54 +249,6 @@ src/UnitCellTemplate.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/UnitCellTemplate.c.s
 .PHONY : src/UnitCellTemplate.c.s
 
-src/pbPlots.o: src/pbPlots.c.o
-.PHONY : src/pbPlots.o
-
-# target to build an object file
-src/pbPlots.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/pbPlots.c.o
-.PHONY : src/pbPlots.c.o
-
-src/pbPlots.i: src/pbPlots.c.i
-.PHONY : src/pbPlots.i
-
-# target to preprocess a source file
-src/pbPlots.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/pbPlots.c.i
-.PHONY : src/pbPlots.c.i
-
-src/pbPlots.s: src/pbPlots.c.s
-.PHONY : src/pbPlots.s
-
-# target to generate assembly for a file
-src/pbPlots.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/pbPlots.c.s
-.PHONY : src/pbPlots.c.s
-
-src/supportLib.o: src/supportLib.c.o
-.PHONY : src/supportLib.o
-
-# target to build an object file
-src/supportLib.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/supportLib.c.o
-.PHONY : src/supportLib.c.o
-
-src/supportLib.i: src/supportLib.c.i
-.PHONY : src/supportLib.i
-
-# target to preprocess a source file
-src/supportLib.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/supportLib.c.i
-.PHONY : src/supportLib.c.i
-
-src/supportLib.s: src/supportLib.c.s
-.PHONY : src/supportLib.s
-
-# target to generate assembly for a file
-src/supportLib.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/supportLib.c.s
-.PHONY : src/supportLib.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -336,9 +264,6 @@ help:
 	@echo "... src/Parameters.o"
 	@echo "... src/Parameters.i"
 	@echo "... src/Parameters.s"
-	@echo "... src/Plots.o"
-	@echo "... src/Plots.i"
-	@echo "... src/Plots.s"
 	@echo "... src/Random.o"
 	@echo "... src/Random.i"
 	@echo "... src/Random.s"
@@ -348,12 +273,6 @@ help:
 	@echo "... src/UnitCellTemplate.o"
 	@echo "... src/UnitCellTemplate.i"
 	@echo "... src/UnitCellTemplate.s"
-	@echo "... src/pbPlots.o"
-	@echo "... src/pbPlots.i"
-	@echo "... src/pbPlots.s"
-	@echo "... src/supportLib.o"
-	@echo "... src/supportLib.i"
-	@echo "... src/supportLib.s"
 .PHONY : help
 
 

@@ -15,9 +15,6 @@
 #define NMAX  (11000)
 #define LINE_LENGTH  (256)
 
-#define Fe  (0)
-#define Mo  (1)
-
 #define J1FeFe  (17.0)
 #define J2FeFe  (16.5)
 
@@ -29,6 +26,6 @@
 #define LATTICESIZE 30
 #define NO_OF_ATOMS_SIDE 2*LATTICESIZE
 
-#define NO_OF_TRIALS  186500
+#define NO_OF_TRIALS  4075000
 #define BOLTZMAN_CONSTANT 0.001380649
 

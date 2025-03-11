@@ -1,6 +1,6 @@
 CMakeFiles/build.dir/src/Lattice.c.o: \
- /home/hellbats/Code/Research/src/Lattice.c /usr/include/stdc-predef.h \
- /usr/include/stdio.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/Lattice.c \
+ /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/aarch64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/aarch64-linux-gnu/bits/wordsize.h \
@@ -31,15 +31,15 @@ CMakeFiles/build.dir/src/Lattice.c.o: \
  /usr/include/aarch64-linux-gnu/bits/fp-fast.h \
  /usr/include/aarch64-linux-gnu/bits/mathcalls-helper-functions.h \
  /usr/include/aarch64-linux-gnu/bits/mathcalls.h \
- /home/hellbats/Code/Research/src/include/Lattice.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Lattice.h \
  /usr/lib/gcc/aarch64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/aarch64-linux-gnu/bits/wchar.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-intn.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-least.h \
- /home/hellbats/Code/Research/src/include/Definitions.h \
- /home/hellbats/Code/Research/src/include/Parameters.h \
- /home/hellbats/Code/Research/src/include/Random.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Definitions.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Parameters.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Random.h \
  /usr/include/gsl/gsl_rng.h /usr/include/stdlib.h \
  /usr/include/aarch64-linux-gnu/bits/waitflags.h \
  /usr/include/aarch64-linux-gnu/bits/waitstatus.h \

@@ -1,6 +1,7 @@
 CMakeFiles/build.dir/src/Random.c.o: \
- /home/hellbats/Code/Research/src/Random.c /usr/include/stdc-predef.h \
- /home/hellbats/Code/Research/src/include/Random.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/Random.c \
+ /usr/include/stdc-predef.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Random.h \
  /usr/include/gsl/gsl_rng.h /usr/include/stdlib.h \
  /usr/include/aarch64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -64,4 +65,4 @@ CMakeFiles/build.dir/src/Random.c.o: \
  /usr/include/aarch64-linux-gnu/bits/wchar.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-least.h \
- /home/hellbats/Code/Research/src/include/Definitions.h
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Definitions.h

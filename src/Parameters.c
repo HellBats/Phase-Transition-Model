@@ -4,7 +4,7 @@
 #include "include/Random.h"
 
 
-void CalculateMagnetization(Lattice* lattice,UnitCell cell)
+void CalculateMagnetizationPerSite(Lattice* lattice,UnitCell cell)
 {
     int no_of_atoms = NO_OF_ATOMS_SIDE;
     double magnetization = 0;
@@ -36,28 +36,37 @@ void CalulateAverageParameters(Lattice *lattice, UnitCell cell, double beta, flo
     double delta_E;
     double average_energy = 0;
     double average_magnetization = 0;
+    CalculateMagnetizationPerSite(lattice,cell);
     for(int i=0;i<(NO_OF_TRIALS/2);)
     {
         int id = GenerateRandomAtomID();
         delta_E = SpinFlipEnergyChange(lattice,id,magnetic_field);
-        if(delta_E==0) continue;
-        else if(delta_E<0)
+        if(delta_E<=0)
         {
-            lattice->atoms[id%no_of_atoms][(id/no_of_atoms)%no_of_atoms]
-            [((id/no_of_atoms)/no_of_atoms)%no_of_atoms].spin*=-1;
+            int i = id % no_of_atoms;
+            int j = (id / no_of_atoms) % no_of_atoms;
+            int k = (id / (no_of_atoms * no_of_atoms)) % no_of_atoms;
+            lattice->atoms[i][j][k].spin *= -1;
+            float spin = lattice->atoms[i][j][k].spin;
             lattice->Energy += delta_E;
+            lattice->Magnetization += (2*spin)/(LATTICESIZE*LATTICESIZE*LATTICESIZE*
+            (cell.no_of_atoms_1+cell.no_of_atoms_2));
         }
         else
         {
             if(exp(-delta_E*beta)>Random())
             {
-                lattice->atoms[id%no_of_atoms][(id/no_of_atoms)%no_of_atoms]
-                [((id/no_of_atoms)/no_of_atoms)%no_of_atoms].spin*=-1;
+                int i = id % no_of_atoms;
+                int j = (id / no_of_atoms) % no_of_atoms;
+                int k = (id / (no_of_atoms * no_of_atoms)) % no_of_atoms;
+                lattice->atoms[i][j][k].spin *= -1;
+                float spin = lattice->atoms[i][j][k].spin;
                 lattice->Energy += delta_E;
+                lattice->Magnetization += (2*spin)/(LATTICESIZE*LATTICESIZE*LATTICESIZE*
+                (cell.no_of_atoms_1+cell.no_of_atoms_2));
             }
         }
         average_energy+=lattice->Energy;
-        CalculateMagnetization(lattice,cell);
         average_magnetization+=lattice->Magnetization;
         i++;
     }

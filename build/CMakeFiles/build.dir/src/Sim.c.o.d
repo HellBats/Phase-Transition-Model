@@ -1,4 +1,5 @@
-CMakeFiles/build.dir/src/Sim.c.o: /home/hellbats/Code/Research/src/Sim.c \
+CMakeFiles/build.dir/src/Sim.c.o: \
+ /home/hellbats/Code/Phase-Transition-Model/src/Sim.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/aarch64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -60,11 +61,10 @@ CMakeFiles/build.dir/src/Sim.c.o: /home/hellbats/Code/Research/src/Sim.c \
  /usr/include/aarch64-linux-gnu/bits/mathcalls-helper-functions.h \
  /usr/include/aarch64-linux-gnu/bits/mathcalls.h \
  /usr/lib/gcc/aarch64-linux-gnu/14/include/omp.h \
- /home/hellbats/Code/Research/src/include/Plots.h \
- /home/hellbats/Code/Research/src/include/Lattice.h \
- /home/hellbats/Code/Research/src/include/Definitions.h \
- /home/hellbats/Code/Research/src/include/Parameters.h \
- /home/hellbats/Code/Research/src/include/Random.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Lattice.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Definitions.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Parameters.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Random.h \
  /usr/include/gsl/gsl_rng.h /usr/include/gsl/gsl_types.h \
  /usr/include/gsl/gsl_errno.h /usr/include/errno.h \
  /usr/include/aarch64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
@@ -76,4 +76,4 @@ CMakeFiles/build.dir/src/Sim.c.o: /home/hellbats/Code/Research/src/Sim.c \
  /usr/include/aarch64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/aarch64-linux-gnu/bits/types/locale_t.h \
  /usr/include/aarch64-linux-gnu/bits/types/__locale_t.h \
- /home/hellbats/Code/Research/src/include/UnitCellTemplate.h
+ /home/hellbats/Code/Phase-Transition-Model/src/include/UnitCellTemplate.h

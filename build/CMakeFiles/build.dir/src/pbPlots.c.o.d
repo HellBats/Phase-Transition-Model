@@ -1,6 +1,8 @@
 CMakeFiles/build.dir/src/pbPlots.c.o: \
- /home/hellbats/Code/Research/src/pbPlots.c /usr/include/stdc-predef.h \
- /home/hellbats/Code/Research/src/include/pbPlots.h /usr/include/stdlib.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/pbPlots.c \
+ /usr/include/stdc-predef.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/pbPlots.h \
+ /usr/include/stdlib.h \
  /usr/include/aarch64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/aarch64-linux-gnu/bits/wordsize.h \

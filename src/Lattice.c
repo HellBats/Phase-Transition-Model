@@ -75,13 +75,10 @@ void Calculate_Neighbours(Lattice* Latt,
 }
 
 
-void PutOnEquilibrium(Lattice *lattice, UnitCell cell, double beta, float magnetic_field)
+void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field)
 {
     int no_of_atoms = NO_OF_ATOMS_SIDE;
     double delta_E;
-    InitalizeLattice(lattice,cell);
-    Calculate_Neighbours(lattice,cell);
-    CalculateTotalEnergy(lattice,magnetic_field);
     for(int i=0;i<NO_OF_TRIALS;)
     {
         int id = GenerateRandomAtomID();
@@ -89,16 +86,20 @@ void PutOnEquilibrium(Lattice *lattice, UnitCell cell, double beta, float magnet
         if(delta_E==0) continue;
         else if(delta_E<0)
         {
-            lattice->atoms[id%no_of_atoms][(id/no_of_atoms)%no_of_atoms]
-            [((id/no_of_atoms)/no_of_atoms)%no_of_atoms].spin*=-1;
+            int i = id % no_of_atoms;
+            int j = (id / no_of_atoms) % no_of_atoms;
+            int k = (id / (no_of_atoms * no_of_atoms)) % no_of_atoms;
+            lattice->atoms[i][j][k].spin *= -1;
             lattice->Energy += delta_E;
         }
         else
         {
             if(exp(-delta_E*beta)>Random())
             {
-                lattice->atoms[id%no_of_atoms][(id/no_of_atoms)%no_of_atoms]
-                [((id/no_of_atoms)/no_of_atoms)%no_of_atoms].spin*=-1;
+                int i = id % no_of_atoms;
+                int j = (id / no_of_atoms) % no_of_atoms;
+                int k = (id / (no_of_atoms * no_of_atoms)) % no_of_atoms;
+                lattice->atoms[i][j][k].spin *= -1;
                 lattice->Energy += delta_E;
             }
         }

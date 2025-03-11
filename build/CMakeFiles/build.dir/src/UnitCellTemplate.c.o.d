@@ -1,8 +1,8 @@
 CMakeFiles/build.dir/src/UnitCellTemplate.c.o: \
- /home/hellbats/Code/Research/src/UnitCellTemplate.c \
+ /home/hellbats/Code/Phase-Transition-Model/src/UnitCellTemplate.c \
  /usr/include/stdc-predef.h \
- /home/hellbats/Code/Research/src/include/UnitCellTemplate.h \
- /home/hellbats/Code/Research/src/include/Lattice.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/UnitCellTemplate.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Lattice.h \
  /usr/lib/gcc/aarch64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/aarch64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -19,4 +19,4 @@ CMakeFiles/build.dir/src/UnitCellTemplate.c.o: \
  /usr/include/aarch64-linux-gnu/bits/stdint-intn.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/aarch64-linux-gnu/bits/stdint-least.h \
- /home/hellbats/Code/Research/src/include/Definitions.h
+ /home/hellbats/Code/Phase-Transition-Model/src/include/Definitions.h
