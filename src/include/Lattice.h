@@ -48,3 +48,5 @@ void Calculate_Neighbours(Lattice* Lattice,
         UnitCell cell);
 
 void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field);
+
+void CreateDeficiency(Lattice * lattice);

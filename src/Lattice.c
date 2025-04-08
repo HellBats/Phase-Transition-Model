@@ -79,22 +79,14 @@ void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field)
 {
     int no_of_atoms = NO_OF_ATOMS_SIDE;
     double delta_E;
-    for(int i=0;i<NO_OF_TRIALS;)
+    for(int i=0;i<MONTECARLO_CYCLES_AVERAGE;i++)
     {
-        int id = GenerateRandomAtomID();
-        delta_E = SpinFlipEnergyChange(lattice,id,magnetic_field);
-        if(delta_E==0) continue;
-        else if(delta_E<0)
+        for(int j=0;j<no_of_atoms*no_of_atoms*no_of_atoms;j++)
         {
-            int i = id % no_of_atoms;
-            int j = (id / no_of_atoms) % no_of_atoms;
-            int k = (id / (no_of_atoms * no_of_atoms)) % no_of_atoms;
-            lattice->atoms[i][j][k].spin *= -1;
-            lattice->Energy += delta_E;
-        }
-        else
-        {
-            if(exp(-delta_E*beta)>Random())
+            int id = GenerateRandomAtomID();
+            delta_E = SpinFlipEnergyChange(lattice,id,magnetic_field);
+            if(delta_E==0) continue;
+            else if(delta_E<0)
             {
                 int i = id % no_of_atoms;
                 int j = (id / no_of_atoms) % no_of_atoms;
@@ -102,7 +94,38 @@ void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field)
                 lattice->atoms[i][j][k].spin *= -1;
                 lattice->Energy += delta_E;
             }
+            else
+            {
+                if(exp(-delta_E*beta)>Random())
+                {
+                    int i = id % no_of_atoms;
+                    int j = (id / no_of_atoms) % no_of_atoms;
+                    int k = (id / (no_of_atoms * no_of_atoms)) % no_of_atoms;
+                    lattice->atoms[i][j][k].spin *= -1;
+                    lattice->Energy += delta_E;
+                }
+            }
         }
-        i++;
+    }
+}
+
+
+void CreateDeficiency(Lattice * lattice)
+{
+    int no_of_atoms = NO_OF_ATOMS_SIDE;
+    int deficiency = (int)((1/DEFECIENCY_RATIO-1)*(LATTICESIZE*LATTICESIZE*LATTICESIZE*2));
+    printf("%d",deficiency);
+    for(;deficiency>0;)
+    {
+        int id = GenerateRandomAtomID();
+        int i = id % no_of_atoms;
+        int j = (id / no_of_atoms) % no_of_atoms;
+        int k = (id / (no_of_atoms * no_of_atoms)) % no_of_atoms;
+        if(lattice->atoms[i][j][k].atom==0)
+        {
+            lattice->atoms[i][j][k].atom=1;
+            lattice->atoms[i][j][k].spin=5/2;
+            deficiency--;
+        }
     }
 }

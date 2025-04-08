@@ -15,7 +15,7 @@ UnitCell InitializeUnitCell() {
     fe.first_nearest_neighbours_size = 8;
     fe.second_nearest_neighbours_size = 10;
 
-    Atom_Template mo = {.atom=0, .spin=1./2};
+    Atom_Template mo = {.atom=0, .spin=-1./2};
     int mo_corner_first_nearest_neighbours[][3] = {{2,0,0},{-2,0,0},{0,2,0},{0,-2,0},
                                             {1,1,0},{1,-1,0},{-1,1,0},{-1,-1,0}};
     int mo_corner_second_nearest_neighbours[][3] = {{1,1,1},{1,1,-1},{1,-1,1},{1,-1,-1},
