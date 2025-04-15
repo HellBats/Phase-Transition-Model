@@ -18,8 +18,8 @@ typedef struct
 {
     uint8_t atom;// Atom type array BYTEMAX means no atom there
     float spin; // This array accounts for spin of atoms
-    void* first_nearest_neighbours;
-    void* second_nearest_neighbours;
+    int first_nearest_neighbours[24];
+    int second_nearest_neighbours[30];
     uint8_t first_nearest_neighbours_size;
     uint8_t second_nearest_neighbours_size;
 }Atom_Template;
@@ -49,4 +49,4 @@ void Calculate_Neighbours(Lattice* Lattice,
 
 void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field);
 
-void CreateDeficiency(Lattice * lattice);
+void CreateDeficiency(Lattice * lattice, float DEFECIENCY_PERCENTAGE);

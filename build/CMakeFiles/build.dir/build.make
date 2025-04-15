@@ -69,10 +69,24 @@ include CMakeFiles/build.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/build.dir/flags.make
 
+CMakeFiles/build.dir/src/HelperFunctions.c.o: CMakeFiles/build.dir/flags.make
+CMakeFiles/build.dir/src/HelperFunctions.c.o: /home/hellbats/Code/Phase-Transition-Model/src/HelperFunctions.c
+CMakeFiles/build.dir/src/HelperFunctions.c.o: CMakeFiles/build.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/build.dir/src/HelperFunctions.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/build.dir/src/HelperFunctions.c.o -MF CMakeFiles/build.dir/src/HelperFunctions.c.o.d -o CMakeFiles/build.dir/src/HelperFunctions.c.o -c /home/hellbats/Code/Phase-Transition-Model/src/HelperFunctions.c
+
+CMakeFiles/build.dir/src/HelperFunctions.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/build.dir/src/HelperFunctions.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hellbats/Code/Phase-Transition-Model/src/HelperFunctions.c > CMakeFiles/build.dir/src/HelperFunctions.c.i
+
+CMakeFiles/build.dir/src/HelperFunctions.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/build.dir/src/HelperFunctions.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hellbats/Code/Phase-Transition-Model/src/HelperFunctions.c -o CMakeFiles/build.dir/src/HelperFunctions.c.s
+
 CMakeFiles/build.dir/src/Lattice.c.o: CMakeFiles/build.dir/flags.make
 CMakeFiles/build.dir/src/Lattice.c.o: /home/hellbats/Code/Phase-Transition-Model/src/Lattice.c
 CMakeFiles/build.dir/src/Lattice.c.o: CMakeFiles/build.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/build.dir/src/Lattice.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/build.dir/src/Lattice.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/build.dir/src/Lattice.c.o -MF CMakeFiles/build.dir/src/Lattice.c.o.d -o CMakeFiles/build.dir/src/Lattice.c.o -c /home/hellbats/Code/Phase-Transition-Model/src/Lattice.c
 
 CMakeFiles/build.dir/src/Lattice.c.i: cmake_force
@@ -86,7 +100,7 @@ CMakeFiles/build.dir/src/Lattice.c.s: cmake_force
 CMakeFiles/build.dir/src/Parameters.c.o: CMakeFiles/build.dir/flags.make
 CMakeFiles/build.dir/src/Parameters.c.o: /home/hellbats/Code/Phase-Transition-Model/src/Parameters.c
 CMakeFiles/build.dir/src/Parameters.c.o: CMakeFiles/build.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/build.dir/src/Parameters.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/build.dir/src/Parameters.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/build.dir/src/Parameters.c.o -MF CMakeFiles/build.dir/src/Parameters.c.o.d -o CMakeFiles/build.dir/src/Parameters.c.o -c /home/hellbats/Code/Phase-Transition-Model/src/Parameters.c
 
 CMakeFiles/build.dir/src/Parameters.c.i: cmake_force
@@ -100,7 +114,7 @@ CMakeFiles/build.dir/src/Parameters.c.s: cmake_force
 CMakeFiles/build.dir/src/Random.c.o: CMakeFiles/build.dir/flags.make
 CMakeFiles/build.dir/src/Random.c.o: /home/hellbats/Code/Phase-Transition-Model/src/Random.c
 CMakeFiles/build.dir/src/Random.c.o: CMakeFiles/build.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/build.dir/src/Random.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/build.dir/src/Random.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/build.dir/src/Random.c.o -MF CMakeFiles/build.dir/src/Random.c.o.d -o CMakeFiles/build.dir/src/Random.c.o -c /home/hellbats/Code/Phase-Transition-Model/src/Random.c
 
 CMakeFiles/build.dir/src/Random.c.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/build.dir/src/Random.c.s: cmake_force
 CMakeFiles/build.dir/src/Sim.c.o: CMakeFiles/build.dir/flags.make
 CMakeFiles/build.dir/src/Sim.c.o: /home/hellbats/Code/Phase-Transition-Model/src/Sim.c
 CMakeFiles/build.dir/src/Sim.c.o: CMakeFiles/build.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/build.dir/src/Sim.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/build.dir/src/Sim.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/build.dir/src/Sim.c.o -MF CMakeFiles/build.dir/src/Sim.c.o.d -o CMakeFiles/build.dir/src/Sim.c.o -c /home/hellbats/Code/Phase-Transition-Model/src/Sim.c
 
 CMakeFiles/build.dir/src/Sim.c.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/build.dir/src/Sim.c.s: cmake_force
 CMakeFiles/build.dir/src/UnitCellTemplate.c.o: CMakeFiles/build.dir/flags.make
 CMakeFiles/build.dir/src/UnitCellTemplate.c.o: /home/hellbats/Code/Phase-Transition-Model/src/UnitCellTemplate.c
 CMakeFiles/build.dir/src/UnitCellTemplate.c.o: CMakeFiles/build.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/build.dir/src/UnitCellTemplate.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/build.dir/src/UnitCellTemplate.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/build.dir/src/UnitCellTemplate.c.o -MF CMakeFiles/build.dir/src/UnitCellTemplate.c.o.d -o CMakeFiles/build.dir/src/UnitCellTemplate.c.o -c /home/hellbats/Code/Phase-Transition-Model/src/UnitCellTemplate.c
 
 CMakeFiles/build.dir/src/UnitCellTemplate.c.i: cmake_force
@@ -139,27 +153,45 @@ CMakeFiles/build.dir/src/UnitCellTemplate.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/build.dir/src/UnitCellTemplate.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hellbats/Code/Phase-Transition-Model/src/UnitCellTemplate.c -o CMakeFiles/build.dir/src/UnitCellTemplate.c.s
 
+CMakeFiles/build.dir/src/test.c.o: CMakeFiles/build.dir/flags.make
+CMakeFiles/build.dir/src/test.c.o: /home/hellbats/Code/Phase-Transition-Model/src/test.c
+CMakeFiles/build.dir/src/test.c.o: CMakeFiles/build.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/build.dir/src/test.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/build.dir/src/test.c.o -MF CMakeFiles/build.dir/src/test.c.o.d -o CMakeFiles/build.dir/src/test.c.o -c /home/hellbats/Code/Phase-Transition-Model/src/test.c
+
+CMakeFiles/build.dir/src/test.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/build.dir/src/test.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hellbats/Code/Phase-Transition-Model/src/test.c > CMakeFiles/build.dir/src/test.c.i
+
+CMakeFiles/build.dir/src/test.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/build.dir/src/test.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hellbats/Code/Phase-Transition-Model/src/test.c -o CMakeFiles/build.dir/src/test.c.s
+
 # Object files for target build
 build_OBJECTS = \
+"CMakeFiles/build.dir/src/HelperFunctions.c.o" \
 "CMakeFiles/build.dir/src/Lattice.c.o" \
 "CMakeFiles/build.dir/src/Parameters.c.o" \
 "CMakeFiles/build.dir/src/Random.c.o" \
 "CMakeFiles/build.dir/src/Sim.c.o" \
-"CMakeFiles/build.dir/src/UnitCellTemplate.c.o"
+"CMakeFiles/build.dir/src/UnitCellTemplate.c.o" \
+"CMakeFiles/build.dir/src/test.c.o"
 
 # External object files for target build
 build_EXTERNAL_OBJECTS =
 
+build: CMakeFiles/build.dir/src/HelperFunctions.c.o
 build: CMakeFiles/build.dir/src/Lattice.c.o
 build: CMakeFiles/build.dir/src/Parameters.c.o
 build: CMakeFiles/build.dir/src/Random.c.o
 build: CMakeFiles/build.dir/src/Sim.c.o
 build: CMakeFiles/build.dir/src/UnitCellTemplate.c.o
+build: CMakeFiles/build.dir/src/test.c.o
 build: CMakeFiles/build.dir/build.make
 build: /usr/lib/gcc/x86_64-linux-gnu/14/libgomp.so
 build: /usr/lib/x86_64-linux-gnu/libpthread.a
 build: CMakeFiles/build.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable build"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable build"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/build.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -129,6 +129,30 @@ build/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/build
 .PHONY : build/fast
 
+src/HelperFunctions.o: src/HelperFunctions.c.o
+.PHONY : src/HelperFunctions.o
+
+# target to build an object file
+src/HelperFunctions.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/HelperFunctions.c.o
+.PHONY : src/HelperFunctions.c.o
+
+src/HelperFunctions.i: src/HelperFunctions.c.i
+.PHONY : src/HelperFunctions.i
+
+# target to preprocess a source file
+src/HelperFunctions.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/HelperFunctions.c.i
+.PHONY : src/HelperFunctions.c.i
+
+src/HelperFunctions.s: src/HelperFunctions.c.s
+.PHONY : src/HelperFunctions.s
+
+# target to generate assembly for a file
+src/HelperFunctions.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/HelperFunctions.c.s
+.PHONY : src/HelperFunctions.c.s
+
 src/Lattice.o: src/Lattice.c.o
 .PHONY : src/Lattice.o
 
@@ -249,6 +273,30 @@ src/UnitCellTemplate.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/UnitCellTemplate.c.s
 .PHONY : src/UnitCellTemplate.c.s
 
+src/test.o: src/test.c.o
+.PHONY : src/test.o
+
+# target to build an object file
+src/test.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/test.c.o
+.PHONY : src/test.c.o
+
+src/test.i: src/test.c.i
+.PHONY : src/test.i
+
+# target to preprocess a source file
+src/test.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/test.c.i
+.PHONY : src/test.c.i
+
+src/test.s: src/test.c.s
+.PHONY : src/test.s
+
+# target to generate assembly for a file
+src/test.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/build.dir/build.make CMakeFiles/build.dir/src/test.c.s
+.PHONY : src/test.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -258,6 +306,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... build"
+	@echo "... src/HelperFunctions.o"
+	@echo "... src/HelperFunctions.i"
+	@echo "... src/HelperFunctions.s"
 	@echo "... src/Lattice.o"
 	@echo "... src/Lattice.i"
 	@echo "... src/Lattice.s"
@@ -273,6 +324,9 @@ help:
 	@echo "... src/UnitCellTemplate.o"
 	@echo "... src/UnitCellTemplate.i"
 	@echo "... src/UnitCellTemplate.s"
+	@echo "... src/test.o"
+	@echo "... src/test.i"
+	@echo "... src/test.s"
 .PHONY : help
 
 

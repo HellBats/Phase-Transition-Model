@@ -7,6 +7,7 @@
 void CalculateMagnetizationPerSite(Lattice* lattice,UnitCell cell)
 {
     int no_of_atoms = NO_OF_ATOMS_SIDE;
+    int no_of_spins = LATTICESIZE*LATTICESIZE*LATTICESIZE*(cell.no_of_atoms_1+cell.no_of_atoms_2);
     double magnetization = 0;
     for (int i = 0; i < no_of_atoms; i++)
     {
@@ -26,8 +27,7 @@ void CalculateMagnetizationPerSite(Lattice* lattice,UnitCell cell)
             }
         }
     }
-    lattice->Magnetization = magnetization/(LATTICESIZE*LATTICESIZE*LATTICESIZE*
-        (cell.no_of_atoms_1+cell.no_of_atoms_2));
+    lattice->Magnetization = magnetization/no_of_spins;
 }
 
 void CalulateAverageParameters(Lattice *lattice, UnitCell cell, double beta, float magnetic_field)
@@ -36,10 +36,11 @@ void CalulateAverageParameters(Lattice *lattice, UnitCell cell, double beta, flo
     double delta_E;
     double average_energy = 0;
     double average_magnetization = 0;
+    int no_of_spins = LATTICESIZE*LATTICESIZE*LATTICESIZE*(cell.no_of_atoms_1+cell.no_of_atoms_2);
     CalculateMagnetizationPerSite(lattice,cell);
     for(int i=0;i<(MONTECARLO_CYCLES_EQ);i++)
     {
-        for(int j=0;j<(NO_OF_ATOMS_SIDE*NO_OF_ATOMS_SIDE*NO_OF_ATOMS_SIDE);j++)
+        for(int j=0;j<(no_of_spins);)
         {
             int id = GenerateRandomAtomID();
             delta_E = SpinFlipEnergyChange(lattice,id,magnetic_field);
@@ -52,8 +53,7 @@ void CalulateAverageParameters(Lattice *lattice, UnitCell cell, double beta, flo
                 lattice->atoms[i][j][k].spin *= -1;
                 float spin = lattice->atoms[i][j][k].spin;
                 lattice->Energy += delta_E;
-                lattice->Magnetization += (2*spin)/(LATTICESIZE*LATTICESIZE*LATTICESIZE*
-                (cell.no_of_atoms_1+cell.no_of_atoms_2));
+                lattice->Magnetization += (2*spin)/(no_of_spins);
             }
             else
             {
@@ -65,8 +65,7 @@ void CalulateAverageParameters(Lattice *lattice, UnitCell cell, double beta, flo
                     lattice->atoms[i][j][k].spin *= -1;
                     float spin = lattice->atoms[i][j][k].spin;
                     lattice->Energy += delta_E;
-                    lattice->Magnetization += (2*spin)/(LATTICESIZE*LATTICESIZE*LATTICESIZE*
-                    (cell.no_of_atoms_1+cell.no_of_atoms_2));
+                    lattice->Magnetization += (2*spin)/(no_of_spins);
                 }
             }
             if((j%SAMPLING_SIZE)==0)
@@ -74,9 +73,10 @@ void CalulateAverageParameters(Lattice *lattice, UnitCell cell, double beta, flo
                 average_energy+=lattice->Energy;
                 average_magnetization+=lattice->Magnetization;
             }
+            j++;
         }
     }
-    int total_samples = (MONTECARLO_CYCLES_EQ*NO_OF_ATOMS_SIDE*NO_OF_ATOMS_SIDE*NO_OF_ATOMS_SIDE)/SAMPLING_SIZE;
+    int total_samples = (MONTECARLO_CYCLES_EQ*no_of_spins)/SAMPLING_SIZE;
     lattice->Energy = average_energy/total_samples;
     lattice->Magnetization = average_magnetization/total_samples;
 }
@@ -89,6 +89,7 @@ void CalculateTotalEnergy(Lattice* lattice, float magnetic_field)
     
     lattice->Energy = 0;
     int no_of_atoms = NO_OF_ATOMS_SIDE;
+    
     for (int i = 0; i < no_of_atoms; i++)
     {
         for (int j = 0; j < no_of_atoms; j++)

@@ -61,6 +61,7 @@ CMakeFiles/build.dir/src/Sim.c.o: \
  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
  /usr/lib/gcc/x86_64-linux-gnu/14/include/omp.h \
+ /home/hellbats/Code/Phase-Transition-Model/src/include/tests.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/Lattice.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/Definitions.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/Parameters.h \

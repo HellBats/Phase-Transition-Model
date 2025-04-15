@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <math.h>
 #include <omp.h>
+#include "include/tests.h"
 #include "include/Lattice.h"
 #include "include/Parameters.h"
 #include "include/Random.h"
@@ -29,40 +30,74 @@ void Print2DLattice(Lattice *Lattice)
 
 int main()
 {
-    #pragma omp parallel
-    {
-    #pragma omp single
-        printf("OpenMP is using %d threads.\n", omp_get_num_threads());
-    }
-    uint8_t readings = 120;
+    // test_Calculate_Neighbours();
+    int readings = 130;  // Change this as needed
+    int def_readings = 12;
     float magnetic_field = 0;
-    float magnetization[120] = {0};
-    float temperature[120] = {0};
-    double Energies[120] = {0};
+    float magnetizations[def_readings][MAX_READINGS];
+    float temperature[MAX_READINGS] = {0};
+    double Energies[MAX_READINGS] = {0};
     FILE *fpt;
     fpt = fopen("graph.csv", "w+");
-    fprintf(fpt, "Temprature,Manetization,Energies\n");
-    #pragma omp parallel for
-    for (int i = 0; i < readings; i++)
+    fprintf(fpt, "Temperature,");
+    for(int j = 0; j < def_readings; j++)
     {
-        temperature[i] = ((i + 1) * 10);
-        double beta = 1. / (temperature[i]);
-        Lattice *lattice;
-        UnitCell cell = InitializeUnitCell();
-        lattice = (Lattice *)malloc(sizeof(Lattice));
-        InitalizeLattice(lattice, cell);
-        Calculate_Neighbours(lattice, cell);
-        // CreateDeficiency(lattice);
-        CalculateTotalEnergy(lattice, magnetic_field);
-        PutOnEquilibrium(lattice, beta, magnetic_field);
-        CalulateAverageParameters(lattice, cell, beta, magnetic_field);
-        Energies[i] = lattice->Energy / (LATTICESIZE * LATTICESIZE * LATTICESIZE * (cell.no_of_atoms_1 + cell.no_of_atoms_2));
-        magnetization[i] = (double)(lattice->Magnetization);
-        free(lattice);
+        fprintf(fpt, "%f,", (float)(j+16)/2.);
     }
-    for (int i = 0; i < readings; i++)
+    fprintf(fpt, "\n");
+    UnitCell cell = InitializeUnitCell();
+
+    #pragma omp parallel
     {
-        fprintf(fpt, "%f,%f,%f\n", temperature[i], magnetization[i], Energies[i]);
+        #pragma omp single
+        printf("OpenMP is using %d threads.\n", omp_get_num_threads());
+    }
+    for(int j=0;j<def_readings;j++)
+    {
+        #pragma omp parallel for
+        for (int i = 0; i < readings; i++) {
+            temperature[i] = (i+1) * 10;
+            double beta = 1. / temperature[i];
+            
+            // Initialize UnitCell and Lattice
+            Lattice *lattice = (Lattice *)malloc(sizeof(Lattice));
+            
+            if (lattice == NULL) {
+                printf("Memory allocation failed for lattice!\n");
+                continue;  // Proceed to next iteration if malloc fails
+            }
+            InitalizeLattice(lattice, cell);
+            Calculate_Neighbours(lattice, cell);
+            CreateDeficiency(lattice,(float)(j+12)/2.);
+            CalculateTotalEnergy(lattice, magnetic_field);
+            PutOnEquilibrium(lattice, beta, magnetic_field);
+            CalulateAverageParameters(lattice, cell, beta, magnetic_field);
+            
+            Energies[i] = lattice->Energy / (LATTICESIZE * LATTICESIZE * LATTICESIZE * (cell.no_of_atoms_1 + cell.no_of_atoms_2));
+            magnetizations[j][i] = lattice->Magnetization;
+            free(lattice);  // Free the memory after using it
+        }
+    }
+    // double Energy_mean = 0;
+    // double Energy_variance = 0;
+    // for (int i = 0; i < readings; i++) 
+    // {
+    //     Energy_mean+=Energies[i];
+    //     Energy_variance+=pow(Energies[i],2);
+    // }
+    // Energy_mean = Energy_mean/readings;
+    // Energy_variance = Energy_variance/readings;
+    // printf("%f\n",Energy_variance - pow(Energy_mean,2));
+
+    // Write results to file
+    for (int i = 0; i < readings; i++) {
+        fprintf(fpt, "%f,", temperature[i]);
+        for(int j = 0; j < def_readings; j++)
+        {
+            fprintf(fpt, "%f,", magnetizations[j][i]);
+        }
+        fprintf(fpt, "\n");
     }
     fclose(fpt);
+    return 0;
 }
