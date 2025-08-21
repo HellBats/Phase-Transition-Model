@@ -81,7 +81,7 @@ void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field)
     int no_of_atoms = NO_OF_ATOMS_SIDE;
     int no_of_spins = LATTICESIZE*LATTICESIZE*LATTICESIZE*4; //no of atoms in a cell
     double delta_E;
-    for(int i=0;i<MONTECARLO_CYCLES_AVERAGE;i++)
+    for(int i=0;i<MONTECARLO_CYCLES_EQ;i++)
     {
         for(int j=0;j<no_of_spins;)
         {
@@ -116,7 +116,7 @@ void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field)
 void CreateDeficiency(Lattice * lattice, float DEFECIENCY_PERCENTAGE)
 {
     int no_of_atoms = NO_OF_ATOMS_SIDE;
-    int deficiency = (int)((DEFECIENCY_PERCENTAGE/100)*(LATTICESIZE*LATTICESIZE*LATTICESIZE*2)); //2 is no of atoms of a type in a unit cell
+    int deficiency = (int)((DEFECIENCY_PERCENTAGE/100.)*(LATTICESIZE*LATTICESIZE*LATTICESIZE*2)); //2 is no of atoms of a type in a unit cell
     for(;deficiency>0;)
     {
         int id = GenerateRandomAtomID();
@@ -127,6 +127,38 @@ void CreateDeficiency(Lattice * lattice, float DEFECIENCY_PERCENTAGE)
             lattice->atoms[indices[0]][indices[1]][indices[2]].atom=BYTEMAX;
             lattice->atoms[indices[0]][indices[1]][indices[2]].spin=0;
             deficiency--;
+        }
+    }
+}
+
+void SwapDefect(Lattice * lattice, float DEFECT_PERCENTAGE)
+{
+    int no_of_atoms = NO_OF_ATOMS_SIDE;
+    int defect = (int)((DEFECT_PERCENTAGE/100.)*(LATTICESIZE*LATTICESIZE*LATTICESIZE*2));  //4 is no of atoms of a in a unit cell
+    uint8_t flag = 1;
+    uint8_t swap_flags[2*LATTICESIZE][2*LATTICESIZE][2*LATTICESIZE];
+    for(int i=0;i<2*LATTICESIZE;i++)
+        for(int j=0;j<2*LATTICESIZE;j++)
+            for(int k=0;k<2*LATTICESIZE;k++)
+                swap_flags[i][j][k] = 0;
+    for(;defect>0;)
+    {
+        int id = GenerateRandomAtomID();
+        uint32_t indices [3];
+        CalculateIndicesFromId(id,indices);
+        if(lattice->atoms[indices[0]][indices[1]][indices[2]].atom==1 && flag && swap_flags[indices[0]][indices[1]][indices[2]]!=1)
+        {
+            lattice->atoms[indices[0]][indices[1]][indices[2]].atom=0;
+            lattice->atoms[indices[0]][indices[1]][indices[2]].spin=1./2;
+            flag=0;
+        }
+        else if(lattice->atoms[indices[0]][indices[1]][indices[2]].atom==0 && !flag)
+        {
+            lattice->atoms[indices[0]][indices[1]][indices[2]].atom=1;
+            lattice->atoms[indices[0]][indices[1]][indices[2]].spin=5./2;
+            flag=1;
+            swap_flags[indices[0]][indices[1]][indices[2]]=1;
+            defect--;
         }
     }
 }

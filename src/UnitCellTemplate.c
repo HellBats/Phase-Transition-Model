@@ -15,7 +15,7 @@ UnitCell InitializeUnitCell() {
     for(int i=0;i<24;i++) fe.first_nearest_neighbours[i] = fe_corner_first_nearest_neighbours[i];
     for(int i=0;i<30;i++) fe.second_nearest_neighbours[i] = fe_corner_second_nearest_neighbours[i];
 
-    Atom_Template mo = {.atom=0, .spin=-1./2};
+    Atom_Template mo = {.atom=0, .spin=1./2};
     int mo_corner_first_nearest_neighbours[24] = {2,0,0,-2,0,0,0,2,0,0,-2,0,
                                             1,1,0,1,-1,0,-1,1,0,-1,-1,0};
     int mo_corner_second_nearest_neighbours[30] = {1,1,1,1,1,-1,1,-1,1,1,-1,-1,

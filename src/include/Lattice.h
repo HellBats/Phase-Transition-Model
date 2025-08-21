@@ -50,3 +50,6 @@ void Calculate_Neighbours(Lattice* Lattice,
 void PutOnEquilibrium(Lattice *lattice, double beta, float magnetic_field);
 
 void CreateDeficiency(Lattice * lattice, float DEFECIENCY_PERCENTAGE);
+
+
+void SwapDefect(Lattice * lattice, float DEFECT_PERCENTAGE);

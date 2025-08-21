@@ -3,7 +3,7 @@ CMakeFiles/build.dir/src/test.c.o: \
  /usr/include/stdc-predef.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/tests.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/Lattice.h \
- /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -22,8 +22,8 @@ CMakeFiles/build.dir/src/test.c.o: \
  /home/hellbats/Code/Phase-Transition-Model/src/include/Definitions.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/UnitCellTemplate.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/HelperFunctions.h \
- /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/14/include/stddef.h \
- /usr/lib/gcc/x86_64-linux-gnu/14/include/stdarg.h \
+ /usr/include/stdio.h /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \

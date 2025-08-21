@@ -188,7 +188,7 @@ build: CMakeFiles/build.dir/src/Sim.c.o
 build: CMakeFiles/build.dir/src/UnitCellTemplate.c.o
 build: CMakeFiles/build.dir/src/test.c.o
 build: CMakeFiles/build.dir/build.make
-build: /usr/lib/gcc/x86_64-linux-gnu/14/libgomp.so
+build: /usr/lib/gcc/x86_64-linux-gnu/13/libgomp.so
 build: /usr/lib/x86_64-linux-gnu/libpthread.a
 build: CMakeFiles/build.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/hellbats/Code/Phase-Transition-Model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable build"

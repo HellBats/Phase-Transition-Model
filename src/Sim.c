@@ -3,101 +3,92 @@
 #include <stdint.h>
 #include <math.h>
 #include <omp.h>
+#include <time.h>
 #include "include/tests.h"
 #include "include/Lattice.h"
 #include "include/Parameters.h"
 #include "include/Random.h"
 #include "include/UnitCellTemplate.h"
 
-void Print2DLattice(Lattice *Lattice)
+// run simulation, estimate Tc, and write results to file
+double estimate_Tc(
+    int readings, double temp_start, double temp_step,
+    UnitCell cell, float magnetic_field,
+    const char *label, FILE *fpt)
 {
-    int positive = 0, negative = 0;
-    for (int i = 0; i < NO_OF_ATOMS_SIDE; i++)
-    {
-        int j = 0;
-        for (int k = 0; k < NO_OF_ATOMS_SIDE; k++)
-        {
-            printf("%f ", Lattice->atoms[0][i][k].spin);
-            if (Lattice->atoms[0][i][k].spin > 0)
-                positive++;
-            else if (Lattice->atoms[0][i][k].spin < 0)
-                negative++;
-        }
-        printf("\n");
+    float magnetizations[MAX_READINGS];
+    float temperature[MAX_READINGS];
+
+    // --- Run simulation for each T ---
+    #pragma omp parallel for
+    for (int i = 0; i < readings; i++) {
+        temperature[i] = temp_start + i * temp_step;
+        double beta = 1.0 / temperature[i];
+
+        Lattice *lattice = (Lattice *)malloc(sizeof(Lattice));
+        if (lattice == NULL) continue;
+
+        InitalizeLattice(lattice, cell);
+        Calculate_Neighbours(lattice, cell);
+        CalculateTotalEnergy(lattice, magnetic_field);
+        PutOnEquilibrium(lattice, beta, magnetic_field);
+        CalulateAverageParameters(lattice, cell, beta, magnetic_field);
+
+        magnetizations[i] = lattice->Magnetization;
+
+        free(lattice);
     }
-    printf("%d %d\n", positive, negative);
+
+    // --- Write to CSV ---
+    for (int i = 0; i < readings; i++) {
+        fprintf(fpt, "%f,%f,%s\n", temperature[i], magnetizations[i], label);
+    }
+
+    // --- Central difference slope computation ---
+    double dMdT[MAX_READINGS] = {0};
+    for (int i = 1; i < readings - 1; ++i) {
+        double dT = (temperature[i+1] - temperature[i-1]) * 0.5;
+        dMdT[i] = (magnetizations[i+1] - magnetizations[i-1]) / dT;
+    }
+
+    // --- Find max slope location ---
+    int im = 1;
+    double best = fabs(dMdT[1]);
+    for (int i = 2; i < readings - 1; ++i) {
+        double v = fabs(dMdT[i]);
+        if (v > best) { best = v; im = i; }
+    }
+
+    return temperature[im];
 }
 
-int main()
-{
-    // test_Calculate_Neighbours();
-    int readings = 130;  // Change this as needed
-    int def_readings = 12;
+int main() {
     float magnetic_field = 0;
-    float magnetizations[def_readings][MAX_READINGS];
-    float temperature[MAX_READINGS] = {0};
-    double Energies[MAX_READINGS] = {0};
-    FILE *fpt;
-    fpt = fopen("graph.csv", "w+");
-    fprintf(fpt, "Temperature,");
-    for(int j = 0; j < def_readings; j++)
-    {
-        fprintf(fpt, "%f,", (float)(j+16)/2.);
-    }
-    fprintf(fpt, "\n");
     UnitCell cell = InitializeUnitCell();
 
-    #pragma omp parallel
-    {
-        #pragma omp single
-        printf("OpenMP is using %d threads.\n", omp_get_num_threads());
-    }
-    for(int j=0;j<def_readings;j++)
-    {
-        #pragma omp parallel for
-        for (int i = 0; i < readings; i++) {
-            temperature[i] = (i+1) * 10;
-            double beta = 1. / temperature[i];
-            
-            // Initialize UnitCell and Lattice
-            Lattice *lattice = (Lattice *)malloc(sizeof(Lattice));
-            
-            if (lattice == NULL) {
-                printf("Memory allocation failed for lattice!\n");
-                continue;  // Proceed to next iteration if malloc fails
-            }
-            InitalizeLattice(lattice, cell);
-            Calculate_Neighbours(lattice, cell);
-            CreateDeficiency(lattice,(float)(j+12)/2.);
-            CalculateTotalEnergy(lattice, magnetic_field);
-            PutOnEquilibrium(lattice, beta, magnetic_field);
-            CalulateAverageParameters(lattice, cell, beta, magnetic_field);
-            
-            Energies[i] = lattice->Energy / (LATTICESIZE * LATTICESIZE * LATTICESIZE * (cell.no_of_atoms_1 + cell.no_of_atoms_2));
-            magnetizations[j][i] = lattice->Magnetization;
-            free(lattice);  // Free the memory after using it
-        }
-    }
-    // double Energy_mean = 0;
-    // double Energy_variance = 0;
-    // for (int i = 0; i < readings; i++) 
-    // {
-    //     Energy_mean+=Energies[i];
-    //     Energy_variance+=pow(Energies[i],2);
-    // }
-    // Energy_mean = Energy_mean/readings;
-    // Energy_variance = Energy_variance/readings;
-    // printf("%f\n",Energy_variance - pow(Energy_mean,2));
+    FILE *fpt = fopen("graph.csv", "w+");
+    fprintf(fpt, "Temperature,Magnetization,Pass\n");
 
-    // Write results to file
-    for (int i = 0; i < readings; i++) {
-        fprintf(fpt, "%f,", temperature[i]);
-        for(int j = 0; j < def_readings; j++)
-        {
-            fprintf(fpt, "%f,", magnetizations[j][i]);
-        }
-        fprintf(fpt, "\n");
-    }
+    // First coarse pass
+    double coarse_step = 10.0;
+    int coarse_points = MAX_READINGS; // 30 points up to 300 K
+    double Tc_est1 = estimate_Tc(coarse_points, coarse_step, coarse_step, cell, magnetic_field, "coarse", fpt);
+    printf("First coarse Tc estimate ≈ %f\n", Tc_est1);
+
+    // Second finer pass around Tc_est1
+    double fine_step = 1.0;
+    double T_low  = Tc_est1 - 10; // search window
+    int fine_points = 21;         // Tc_est1-10 to Tc_est1+10
+    double Tc_est2 = estimate_Tc(fine_points, T_low, fine_step, cell, magnetic_field, "fine", fpt);
+    printf("Refined Tc estimate ≈ %f\n", Tc_est2);
+
+    // Third ultra-fine pass
+    double ultra_step = 0.2;
+    double T_low2  = Tc_est2 - 2; 
+    int ultra_points = 21; // Tc_est2-2 to Tc_est2+2
+    double Tc_est3 = estimate_Tc(ultra_points, T_low2, ultra_step, cell, magnetic_field, "ultra", fpt);
+    printf("Ultra-fine Tc estimate ≈ %f\n", Tc_est3);
+
     fclose(fpt);
     return 0;
 }

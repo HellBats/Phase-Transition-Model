@@ -3,7 +3,7 @@ CMakeFiles/build.dir/src/HelperFunctions.c.o: \
  /usr/include/stdc-predef.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/HelperFunctions.h \
  /home/hellbats/Code/Phase-Transition-Model/src/include/Definitions.h \
- /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
